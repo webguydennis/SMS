@@ -143,24 +143,17 @@ namespace TextGateKeeper.Tests {
             _mockTextMessageRepository.Setup(c => c
                 .GetTextMessageCountPerPhoneFromLastSecond(textMessage.PhoneNumberFrom))
                 .Returns(4);
+            _mockTextMessageRepository.Setup(c => c.SaveChanges()).Returns(true);
 
             // Act
             var result = _smsController.SendText(textMessage);
             var okResult = result as OkObjectResult;
             string? okResultMessage = okResult?.Value as string;
-k
+
             // Assert
             Assert.That(okResult?.StatusCode, Is.EqualTo(200));
             Assert.That(okResultMessage, Is.EqualTo("Success."));
         }
-
-            // Arrange
-
-
-            // Act
-
-
-            // Assert
         
     }
 }
