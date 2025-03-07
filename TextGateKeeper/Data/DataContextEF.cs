@@ -10,14 +10,25 @@ namespace TextGateKeeper.Data {
             _config = config;
         }
 
-        public DbSet<TextMessage> textMessages { get; set; }
+        public DbSet<TextMessage>? textMessages { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            string? connectionStrings = _config.GetSection("ConnectionStrings:DefaultConnection").Value;
+            Console.WriteLine("Dennis Test");
+            Console.WriteLine(connectionStrings?.ToLower().IndexOf("testdatabase") > 0);
             if (!optionsBuilder.IsConfigured) {
-                optionsBuilder.UseSqlServer(_config.GetConnectionString("DefaultConnection"),
-                    optionsBuilder => optionsBuilder.EnableRetryOnFailure()
-                );
+                if (connectionStrings?.ToLower().IndexOf("testdatabase") > 0) {
+                    optionsBuilder
+                        .UseSqlServer(_config.GetConnectionString("DefaultConnection"),
+                            optionsBuilder => optionsBuilder.EnableRetryOnFailure()
+                        )
+                        .UseInMemoryDatabase("TestDatabase");
+                } else {
+                    optionsBuilder.UseSqlServer(_config.GetConnectionString("DefaultConnection"),
+                        optionsBuilder => optionsBuilder.EnableRetryOnFailure()
+                    );
+                }
             }
         }
 
