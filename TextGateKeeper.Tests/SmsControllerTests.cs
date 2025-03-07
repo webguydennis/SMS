@@ -53,7 +53,7 @@ namespace TextGateKeeper.Tests {
             var result = config.GetSection("AppSettings:MaxLimitAccountPerSecond").Value;            
 
             // Assert
-             Assert.That(result, Is.EqualTo("10"));
+            Assert.That(result, Is.EqualTo("10"));
         }
 
         [Test]
